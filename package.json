@@ -1,0 +1,14 @@
+{
+  "name": "curso-fulltstack-alliance",
+  "version": "1.0.0",
+  "description": "Conteúdo do curos Fullstack Node.js + Vue.js da Alliance Consultoria",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "markdown-it": "^10.0.0"
+  }
+}
