@@ -280,6 +280,15 @@ Durante vários anos todas as páginas funcionavam desta forma (ou parecida). Es
 
 ### Preparando o ambiente
 
+Windows 😢, vamos resolver isto:
+
+- 🐧 [Guia de instalação do Subsistema Windows para Linux para Windows 10](https://docs.microsoft.com/pt-br/windows/wsl/install-win10)
+
+Você também vai precisar:
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Node.JS](https://nodejs.org/en/download/)
+- [PostgreSQL](https://www.postgresql.org/download/) esse você pode instalar depois 🕘
+
 ### Backend
 
 #### Chega de papo: primeiro programa
