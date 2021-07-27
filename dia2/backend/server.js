@@ -12,63 +12,55 @@ pool.on('connect', () => {
     console.log("Base de dados conectada com sucesso")
 })
 
-
-var listaProdutos = [];
-
-function initMemDB() {
-    listaProdutos.push({codigo: 1, quantidade: 10, descricao: 'caneta'});
-    listaProdutos.push({codigo: 2, quantidade: 20, descricao: 'borracha'});
-    listaProdutos.push({codigo: 3, quantidade: 5, descricao: 'caderno'});
-}
-
 app.get('/', (req, res) => {
   res.send('Hello World! ')
 })
 
+// Retorna todos os produtos
 app.get('/produtos/', async (req, res) => {
     const result = await pool.query("SELECT codigo, descricao, quantidade FROM produtos");
     res.status(200).send(result.rows);
 })
 
-app.get('/produtos/:codigo', (req, res) => {
-    var result = listaProdutos.filter((x) => x.codigo == req.params.codigo);
+// Retorna o produto com o codigo informado
+app.get('/produtos/:codigo', async (req, res) => {
+    const result = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [req.params.codigo]);
 
-    if (result.length == 0) {
+    if (result.rowCount == 0) {
         res.statusCode = 404
         res.send("")
     }
     else 
-        res.send(result[0]);
+        res.send(result.rows[0]);
 })
 
-app.delete('/produtos/:codigo', (req, res) => {
-    var result = listaProdutos.filter((x) => x.codigo != req.params.codigo);
+app.delete('/produtos/:codigo', async (req, res) => {
+    var result = await pool.query("DELETE FROM produtos WHERE codigo = $1", [req.params.codigo]);
 
-    if (result.length == listaProdutos.length) {
+    if (result.rowCount == 0) {
         res.statusCode = 404
         res.send("NOK"); 
     }
     else { 
-        listaProdutos = result;
         res.send("OK");
     }
 })
 
 
-app.put('/produtos/:codigo', (req, res) => {
-    var resource = listaProdutos.filter((x) => x.codigo == req.params.codigo);
+app.put('/produtos/:codigo', async (req, res) => {
+    const resource = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [req.params.codigo]);
     var newObj = req.body;
     //Verifica se o código da URl existe
-    if (resource.length == 0) {
+    if (resource.rowCount == 0) {
         res.statusCode = 404
         res.send("NOK"); 
     }
     else {
-        var elementoAtual = resource[0]; 
+        var elementoAtual = resource.rows[0]; 
         
         // Verifica se o código novo já é utilizado (e não é o mesmo)
         if (elementoAtual.codigo != newObj.codigo) {
-            var existsNew = listaProdutos.filter((x) => x.codigo == newObj.codigo);
+            var existsNew = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [newObj.codigo]);
             if (existsNew.length > 0) {
                 res.statusCode = 409
                 res.send("NOK");
@@ -76,40 +68,28 @@ app.put('/produtos/:codigo', (req, res) => {
             } 
         } 
 
-        elementoAtual.codigo = newObj.codigo;
-        elementoAtual.descricao = newObj.descricao;
-        elementoAtual.quantidade = newObj.quantidade;
+        const updated = await pool.query("UPDATE produtos SET codigo = $1, descricao = $2, quantidade = $3 WHERE codigo = $4", [newObj.codigo, newObj.descricao, newObj.quantidade, req.params.codigo]);
         res.send("OK");
     }
 })
 
-app.post('/produtos', (req,res) => {
+app.post('/produtos', async (req,res) => {
     var newObj = req.body;
     // Checar se o objeto recebido já existe (mesmo codigo)
-    var sameCodigo = listaProdutos.filter(x => x.codigo == newObj.codigo);
-    if (sameCodigo.length > 0 ) {
+    const sameCodigo = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [newObj.codigo]);
+    if (sameCodigo.rowCount > 0 ) {
     //     Retornar 409 (conflict)
         res.statusCode = 409;
         res.send("NOK");
     } else {
         // Caso negativo, adicionar na lista em memória
-        listaProdutos.push(newObj);
+        const inserted = await pool.query("INSERT INTO produtos (codigo, descricao, quantidade) VALUES ($1, $2, $3) RETURNING *", [newObj.codigo, newObj.descricao, newObj.quantidade]);
         // Definir cõdigo de retorno codigo 201 (created)
-        res.statusCode = 201;
         // Retornar o objeto inserido (nâo a lista)
-        res.send(newObj);
+        res.status(201).send(inserted[0]);
     }
 })
- 
-
-// DELETE
-// Verbo DELETE na rota /produtos/:codigo
-
-// Sobrescrever a lista listaProdutos com um filter removendo o item excluido
-// Como criar rota DELETE no express 
-
 
 app.listen(port, () => {
-  initMemDB();
   console.log(`Example app listening at http://localhost:${port}`)
 })

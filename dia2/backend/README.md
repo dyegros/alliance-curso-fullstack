@@ -69,3 +69,18 @@ INSERT INTO [tabela]([campos], ...) VALUES (valores, ...)
 UPDATE [tabela] SET [campos1]=valor1, ... WHERE [campo_chave] = valor_chave
 DELETE FROM [tabela] WHERE [campo_chave] = valor_chave
 ```
+
+Tipos primitivos
+integer, string, bool
+
+var i = 10, nome = "Diego"
+
+Tipo arrays (listas)
+var lista = ["banana", "maca", "amora", 1, 2, 5]
+
+Tipos dicionário
+var usuario = {
+    codigo: 10,
+    nome: "Diego",
+    email: "dyegros@allianceconsultoria.com.br"
+}
