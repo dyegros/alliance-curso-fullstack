@@ -61,7 +61,7 @@ app.put('/produtos/:codigo', async (req, res) => {
         // Verifica se o código novo já é utilizado (e não é o mesmo)
         if (elementoAtual.codigo != newObj.codigo) {
             var existsNew = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [newObj.codigo]);
-            if (existsNew.length > 0) {
+            if (existsNew.rowCount > 0) {
                 res.statusCode = 409
                 res.send("NOK");
                 return;
@@ -76,7 +76,7 @@ app.put('/produtos/:codigo', async (req, res) => {
 app.post('/produtos', async (req,res) => {
     var newObj = req.body;
     // Checar se o objeto recebido já existe (mesmo codigo)
-    const sameCodigo = await pool.query("SELECT codigo, descricao, quantidade FROM produtos WHERE codigo = $1", [newObj.codigo]);
+    const sameCodigo = await pool.query("SELECT codigo FROM produtos WHERE codigo = $1", [newObj.codigo]);
     if (sameCodigo.rowCount > 0 ) {
     //     Retornar 409 (conflict)
         res.statusCode = 409;
