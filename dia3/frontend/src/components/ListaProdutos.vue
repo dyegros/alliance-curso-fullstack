@@ -1,12 +1,14 @@
 <template>
   <ul id="listaProdutos">
       <li v-for="produto in produtos" v-bind:key="produto.codigo">
-          {{ produto.codigo + " - " + produto.descricao }}
+          <Produto v-bind:produto="produto" />
       </li>
   </ul>
 </template>
 
 <script>
+import Produto from './Produto.vue'
+
 export default {
     name: 'ListaProdutos',
     data: function() {
@@ -18,6 +20,9 @@ export default {
                 {"codigo":3,"descricao":"nova descricao","quantidade":9}
             ]
         }
+    },
+    components: {
+        Produto
     }
 }
 </script>
