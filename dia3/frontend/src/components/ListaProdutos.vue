@@ -1,7 +1,7 @@
 <template>
   <ul id="listaProdutos">
-      <li v-for="produto in produtos" v-bind:key="produto.codigo">
-          <Produto v-bind:produto="produto" />
+      <li v-for="produto, index in produtos" v-bind:key="produto.codigo">
+          <Produto v-bind:produto="produto" v-on:removed="removerProduto(index)"/>
       </li>
   </ul>
 </template>
@@ -19,6 +19,11 @@ export default {
     },
     components: {
         Produto
+    },
+    methods: {
+      removerProduto: function(index) {
+        this.produtos = this.produtos.splice(index, 1)
+      }
     },
     async created() {
       var response = await axios.get('http://localhost:3000/produtos')
