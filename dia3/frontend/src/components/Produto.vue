@@ -1,11 +1,11 @@
 <template>
-  <div id="card-produto">
-    <h2>{{ produto.descricao }}</h2>
-    <div>
-        <span> Código: {{ produto.codigo }} </span>
-        <span id="lbl-quantidade"> Quantidade: {{ produto.quantidade }} </span>
-    </div>
-  </div>
+  <b-card id="card-produto" class="text-center"
+    :title="produto.descricao"
+    :sub-title="produto.codigo"
+    >
+    <b-card-text class="bg-secondary text-light">Quantidade {{produto.quantidade}}</b-card-text>
+    <b-icon-trash class="float-right"></b-icon-trash>
+  </b-card>
 </template>
 
 <script>
@@ -22,17 +22,16 @@ export default {
 </script>
 
 <style scoped>
-
-div#card-produto {
-    border: 1px solid green;
-    margin: 10px;
+.card {
+    margin-bottom: 10px;
+    max-width: 320px;
 }
 
-span {
-    margin-right: 10px;
+.card-title {
+  text-align: left;
 }
 
-span#lbl-quantidade {
-    color: indigo;
+.card-subtitle {
+  text-align: left;
 }
 </style>
