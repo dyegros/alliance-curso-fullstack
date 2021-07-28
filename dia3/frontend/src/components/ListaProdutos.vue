@@ -22,7 +22,7 @@ export default {
     },
     methods: {
       removerProduto: function(index) {
-        this.produtos = this.produtos.splice(index, 1)
+        this.produtos.splice(index, 1)
       }
     },
     async created() {
