@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="card-produto">
     <h2>{{ produto.descricao }}</h2>
     <div>
         <span> Código: {{ produto.codigo }} </span>
-        <span> Quantidade: {{ produto.quantidade }} </span>
+        <span id="lbl-quantidade"> Quantidade: {{ produto.quantidade }} </span>
     </div>
   </div>
 </template>
@@ -21,6 +21,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
+div#card-produto {
+    border: 1px solid green;
+    margin: 10px;
+}
+
+span {
+    margin-right: 10px;
+}
+
+span#lbl-quantidade {
+    color: indigo;
+}
 </style>
