@@ -2,7 +2,7 @@
   <div>
     <b-card id="card-produto" class="text-center"
       :title="produto.descricao"
-      :sub-title="produto.codigo"
+      :sub-title="produto.codigo.toString()"
       >
       <b-card-text class="bg-secondary text-light">Quantidade {{produto.quantidade}}</b-card-text>
       <b-button class="float-right" v-b-modal="'modal-confirm-delete-'+produto.codigo">

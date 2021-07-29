@@ -89,7 +89,7 @@ app.post('/produtos', async(req, res) => {
         const inserted = await pool.query("INSERT INTO produtos (codigo, descricao, quantidade) VALUES ($1, $2, $3) RETURNING *", [newObj.codigo, newObj.descricao, newObj.quantidade]);
         // Definir cõdigo de retorno codigo 201 (created)
         // Retornar o objeto inserido (nâo a lista)
-        res.status(201).send(inserted[0]);
+        res.status(201).send(inserted.rows[0]);
     }
 })
 
