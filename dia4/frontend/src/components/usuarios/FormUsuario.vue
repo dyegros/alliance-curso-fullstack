@@ -90,7 +90,7 @@ export default {
                 this.errors.push("Informe o e-mail do usuário");
             else {
                 var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                if (!re.test(this.usuarioInterno.email)) 
+                if (!   re.test(this.usuarioInterno.email)) 
                     this.errors.push("Informe um e-mail válido");
             }
 
