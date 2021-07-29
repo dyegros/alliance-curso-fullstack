@@ -96,3 +96,19 @@ var usuario = {
 - Criar backend para o CRUD de usuários. 
 
 - Criar frontend para listar, incluir, editar e excluir usuários
+
+
+```sql
+CREATE SEQUENCE usuarios_cod_seq;
+
+CREATE TABLE usuarios (
+    codigo integer NOT NULL DEFAULT nextval('usuarios_cod_seq'),
+    nome character varying(60) COLLATE pg_catalog."default" NOT NULL,
+    login character varying(30) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT usuarios_pkey PRIMARY KEY (codigo)
+);
+
+ALTER SEQUENCE usuarios_cod_seq
+OWNED BY usuarios.codigo;
+```

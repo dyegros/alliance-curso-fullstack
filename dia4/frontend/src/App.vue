@@ -1,30 +1,47 @@
 <template>
-  <div id="app">
-    <ListaProdutos />
-  </div>
+  <b-container id="app">
+    <b-row>
+      <b-col>
+        <Menu />
+      </b-col>
+      <b-col cols="10">
+        <router-view/>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-import ListaProdutos from './components/ListaProdutos.vue'
+import Menu from '@/components/menu/Menu'
 
 export default {
   name: 'App',
   components: {
-    ListaProdutos
+    Menu
   }
 }
 </script>
 
-<style lang="scss">
-@import "~@/assets/scss/vendors/bootstrap-vue/index";
 
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 </style>

@@ -93,7 +93,11 @@ ul {
 }
 
 li {
-  margin: 0 10px;
+  margin: 10px;
+  display: inline-block;
 }
 
+.navbar {
+  margin-bottom: 10px;
+}
 </style>
