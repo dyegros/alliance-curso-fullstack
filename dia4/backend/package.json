@@ -1,0 +1,28 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Backend do primeiro dia",
+  "main": "server.js",
+  "scripts": {
+    "serve": "nodemon --delay 500ms server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dyegros/alliance-curso-fullstack.git"
+  },
+  "author": "Diego Yegros (dyegros@allianceonline.com.br)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dyegros/alliance-curso-fullstack/issues"
+  },
+  "homepage": "https://github.com/dyegros/alliance-curso-fullstack#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
