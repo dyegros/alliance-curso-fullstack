@@ -8,44 +8,11 @@
         </b-button>
       </b-navbar-nav>
     </b-navbar>
+    <b-alert v-model="mostrarErro" variant="danger" dismissible>
+      Falha ao {{errorMessage.action}} - {{errorMessage.message}}
+    </b-alert>
     <b-modal title="Incluir produto" id="modal-insert" v-on:ok="adicionarProduto()">
-      <b-form>
-        <b-form-group
-          id="input-codigo"
-          label="Código"
-          label-for="codigo"
-          description="Código do produto"
-        ></b-form-group>
-        <b-form-input 
-          v-model="newProduto.codigo"
-          type="number"
-          required
-        ></b-form-input>
-        <b-form-group
-          id="input-descricao"
-          label="Descrição"
-          label-for="descricao"
-          description="Descrição do produto"
-        ></b-form-group>
-        <b-form-input 
-          id="descricao"
-          v-model="newProduto.descricao"
-          type="text"
-          required
-        ></b-form-input>
-        <b-form-group
-          id="input-quantidade"
-          label="Quantidade"
-          label-for="quantidade"
-          description="Quantidade disponível"
-        ></b-form-group>
-        <b-form-input 
-          id="quantidade"
-          v-model="newProduto.quantidade"
-          type="number"
-          required
-        ></b-form-input>
-      </b-form>
+       <FormProduto :produto="newProduto" />
     </b-modal>
     <ul id="listaProdutos">
         <li v-for="produto, index in produtos" v-bind:key="produto.codigo">
@@ -57,6 +24,7 @@
 
 <script>
 import Produto from './Produto.vue'
+import FormProduto from './FormProduto.vue'
 import axios from 'axios'
 
 export default {
@@ -68,11 +36,17 @@ export default {
               codigo: '',
               descricao: '',
               quantidade: ''
+            },
+            mostrarErro: false,
+            errorMessage: {
+              action: '',
+              message: ''
             }
         }
     },
     components: {
-        Produto
+        Produto,
+        FormProduto
     },
     methods: {
       removerProduto: function(index) {
@@ -87,8 +61,10 @@ export default {
             descricao: '',
             quantidade: ''
           }
-        } catch (e) {
-          console.log(e)
+        } catch (error) {
+          this.mostrarErro = true;
+          this.errorMessage.action = "inserir"
+          this.errorMessage.message = error.response.statusText
         }
       }
     },
