@@ -3,7 +3,7 @@
     <b-navbar toggleable="lg" type="dark" variant="info">
       <b-navbar-brand>Produtos</b-navbar-brand>
       <b-navbar-nav class="ml-auto">
-        <b-button v-b-modal.modal-insert>
+        <b-button v-on:click="$bvModal.show('modal-insert')">
           <b-icon-plus></b-icon-plus>
         </b-button>
       </b-navbar-nav>
@@ -11,12 +11,10 @@
     <b-alert v-model="mostrarErro" variant="danger" dismissible>
       Falha ao {{errorMessage.action}} - {{errorMessage.message}}
     </b-alert>
-    <b-modal title="Incluir produto" id="modal-insert" v-on:ok="adicionarProduto()">
-       <FormProduto :produto="newProduto" />
-    </b-modal>
+    <FormProduto ref="formAdicionar" :produto="newProduto" title="Adicionar Produto" v-on:confirmed="adicionarProduto" idModal="modal-insert"/>
     <ul id="listaProdutos">
         <li v-for="produto, index in produtos" v-bind:key="produto.codigo">
-            <Produto v-bind:produto="produto" v-on:removed="removerProduto(index)"/>
+            <Produto v-bind:produto="produto" :index="index" v-on:removed="removerProduto(index, produto)" v-on:edited="editarProduto"/>
         </li>
     </ul>
   </div>
@@ -49,21 +47,33 @@ export default {
         FormProduto
     },
     methods: {
-      removerProduto: function(index) {
+      removerProduto: async function(index, produto) {
+        // envie o comando de excluir para o backend
+        await axios.delete(`http://localhost:3000/produtos/${produto.codigo}`)
         this.produtos.splice(index, 1)
       },
-      adicionarProduto: async function() {
+      adicionarProduto: async function(produto) {
         try {
-          var result = await axios.post("http://localhost:3000/produtos", this.newProduto)
+          console.log("Adcionair prdouto")
+          console.log(produto)
+          var result = await axios.post("http://localhost:3000/produtos", produto)
           this.produtos.push(result.data)
-          this.newProduto = {
-            codigo: '',
-            descricao: '',
-            quantidade: ''
-          }
         } catch (error) {
           this.mostrarErro = true;
           this.errorMessage.action = "inserir"
+          this.errorMessage.message = error.response.statusText
+        }
+        this.$refs.formAdicionar.reset();
+      },
+      editarProduto: async function(produto, index) {
+        try {
+          var result = await axios.put(`http://localhost:3000/produtos/${this.produtos[index].codigo}`, produto)
+          this.produtos[index].codigo = result.data.codigo
+          this.produtos[index].descricao = result.data.descricao
+          this.produtos[index].quantidade = result.data.quantidade
+        } catch (error) {
+          this.mostrarErro = true;
+          this.errorMessage.action = "atualizar"
           this.errorMessage.message = error.response.statusText
         }
       }

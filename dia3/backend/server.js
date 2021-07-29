@@ -71,8 +71,8 @@ app.put('/produtos/:codigo', async(req, res) => {
             }
         }
 
-        const updated = await pool.query("UPDATE produtos SET codigo = $1, descricao = $2, quantidade = $3 WHERE codigo = $4", [newObj.codigo, newObj.descricao, newObj.quantidade, req.params.codigo]);
-        res.send("OK");
+        const updated = await pool.query("UPDATE produtos SET codigo = $1, descricao = $2, quantidade = $3 WHERE codigo = $4 RETURNING *", [newObj.codigo, newObj.descricao, newObj.quantidade, req.params.codigo]);
+        res.send(updated.rows[0]);
     }
 })
 
