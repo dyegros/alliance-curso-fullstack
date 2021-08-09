@@ -8,8 +8,10 @@ Assim eu posso ter detalhes dos meus gastos e decidir se estou dentro ou fora do
 
 ## Modelo de dados
 
-
 ``` sql
+-- DROP TABLE movimentos CASCADE;
+-- DROP SEQUENCE movimentos_seq CASCADE;
+
 CREATE SEQUENCE movimentos_seq;
 
 CREATE TABLE movimentos (
@@ -17,13 +19,13 @@ CREATE TABLE movimentos (
     data_mov date not null,
     descricao varchar(80) not null,
     categoria varchar(40) null,
-    valor decimal(12,2) not null
+    valor decimal(12,2) not null,
+    CONSTRAINT usuarios_pkey PRIMARY KEY (codigo)
 );
 
 
 ALTER SEQUENCE movimentos_seq
 OWNED BY movimentos.id;
-
 ```
 
 # Categorias 
